@@ -1,0 +1,14 @@
+Menu
+System information
+Languaje
+Exit
+User
+System time
+Local time
+Brand
+CPU
+Cores
+physical RAM
+Used RAM
+free RAM
+IP

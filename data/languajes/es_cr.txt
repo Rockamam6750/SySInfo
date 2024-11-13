@@ -1,0 +1,14 @@
+Menú
+Información del sistema
+Idioma
+Salir
+Usuario
+Hora del sistema
+Hora local
+Marca
+CPU
+Núcleos
+RAM física
+RAM usada
+RAM libre
+IP
