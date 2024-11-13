@@ -1,4 +1,4 @@
-# SySInfo simples windows console application 
+# SySInfo
 
 ## A Functional simple proyect written in C++ showing how to create a console aplication can get windows system information
 
