@@ -1,4 +1,4 @@
-# C++ simple windows console aplication by Rockamam6750
+# SySInfo simples windows console application 
 
 ## A Functional simple proyect written in C++ showing how to create a console aplication can get windows system information
 
