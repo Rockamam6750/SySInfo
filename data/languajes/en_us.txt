@@ -3,6 +3,7 @@ System information
 Languaje
 Exit
 User
+Device Name
 System time
 Local time
 Brand
@@ -12,3 +13,5 @@ physical RAM
 Used RAM
 free RAM
 IP
+Default gateway
+CPU %

@@ -5,4 +5,6 @@ enum Colors { BLACK = 0, BLUE = 1, GREEN = 2, CYAN = 3, RED = 4, MAGENTA = 5, BR
 
 void gotoxy(int x, int y, int backC, int ForGC);
 
+
+
 #endif

@@ -21,6 +21,7 @@ public:
     void Menu();
     void Languaje();
     void SysInformation();
+    void USysInf();
     void Cursor(int x, int y, int type);
     void clear();
 

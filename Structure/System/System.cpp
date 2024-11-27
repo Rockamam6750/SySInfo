@@ -1,76 +1,39 @@
 #include "System.hpp"
 #include <conio.h>
+#include <thread>
+#include <chrono>
+
 #include <iostream>
+
+#define ctrpv -1 //control flag
 
 #define es 0
 #define en 1
 #define nh 2
 
-int System::control(int _xpos, int min, int opt){
-    bool exec = true;
-
-    int coordY = min;
-    int minY = min;
-    int maxY = minY + (opt - 1);
-    
-    int maxopt = opt - 1;
-    int currentOpt = 0;
-    int retOpt = 0;
-
-    while (exec != false){
-
-        gui.Cursor(_xpos, coordY, 0); 
-        std::cout << "*";
-
-        if(kbhit){
-            switch (getch()){
-            case UP:
-                gui.Cursor(_xpos, coordY, 1); std::cout << " ";
-                if(coordY == minY){
-                    currentOpt = maxopt;
-                    coordY = maxY;
-                }else{
-                    coordY--;
-                    currentOpt--;
-                }
-                break;
-            case Down:
-                gui.Cursor(_xpos, coordY, 1); std::cout << " ";
-                if(coordY == maxY){
-                    currentOpt = 0;
-                    coordY = minY;
-                }else{
-                    coordY++;
-                    currentOpt++;
-                }
-                break;
-            case Enter:
-                retOpt = currentOpt;
-                gui.Cursor(_xpos, coordY, 1); std::cout << " ";
-                exec = false;
-                break;
-            default:
-                break;
-            }
-        }
-    }
-    return retOpt;
-}
-
 System::System(std::string title){
     SetConsoleTitleA(title.c_str());
+
+    for(int x = 0; x < 3; x++){
+        Control tm;
+        vc.push_back(tm);
+    }
+
+    vc[0].InitControl(39, 4, 3);
+    vc[1].InitControl(14, 13, 1);
+    vc[2].InitControl(27, 4, 4);
+
 }
 
 void System::MenuSyst(){
     bool run = true;
-    int x = 0;
+    int x = ctrpv;
 
     gui.drawScreen();
-
     gui.Menu();
 
     while(run != false){
-        x = control(27, 4, 3);
+        vc[0].ControlUnit(&x);
         switch(x){
             case 0:
                 SystemInfoI();
@@ -86,19 +49,26 @@ void System::MenuSyst(){
         default:
             break;
        }
+       Sleeper(15);
     }
+}
+
+void System::Sleeper(int miliseconds){
+    std::this_thread::sleep_for(std::chrono::milliseconds(miliseconds));
 }
 
 void System::SystemInfoI(){
 
     bool run = true;
+    int x = ctrpv;
 
     gui.clear();
-
     gui.SysInformation();
 
     while(run != false){
-        int x = control(14, 13, 1);
+        //gui.SysInformation();
+        gui.USysInf();
+        vc[1].ControlUnit(&x);
         switch(x){
         case 0:
             run = false;
@@ -106,20 +76,20 @@ void System::SystemInfoI(){
         default:
             break;
         }
+        Sleeper(15);
     }
     gui.clear();
 }
 
 void System::SystemLanguaje(){
     bool run = true;
-    int opt = 0;
+    int opt = ctrpv;
 
     gui.clear();
-
     gui.Languaje();
 
     while(run != false){
-        opt = control(27, 4, 4);
+        vc[2].ControlUnit(&opt);
         switch(opt){
         case 0:
             gui.cofigureLan(es);
@@ -139,6 +109,7 @@ void System::SystemLanguaje(){
         default:
             break;
         }
+        Sleeper(10);
     }
     gui.clear();
 }

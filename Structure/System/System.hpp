@@ -6,6 +6,7 @@
 #define Enter 13
 
 #include "../Reader/Reader.hpp"
+#include "../Control/Control.hpp"
 #include "../GraphicInter/Gui.hpp"
 
 #include <string>
@@ -16,8 +17,8 @@ class System{
 private:
     Reader read;
     Gui gui;
-    
-    int control(int _xpos, int min, int opt);
+    std::vector<Control> vc;
+    void Sleeper(int miliseconds);
     void SystemInfoI();
     void SystemLanguaje();
 public:

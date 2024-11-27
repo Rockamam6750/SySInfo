@@ -3,6 +3,7 @@ Información del sistema
 Idioma
 Salir
 Usuario
+Nombre del equipo
 Hora del sistema
 Hora local
 Marca
@@ -12,3 +13,5 @@ RAM física
 RAM usada
 RAM libre
 IP
+PeEP
+CPU %
