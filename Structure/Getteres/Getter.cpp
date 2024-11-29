@@ -29,45 +29,53 @@ void Getter::calc(){
 
 }
 
-void Getter::getopv(){
+std::string const Getter::getWinver(){
     
     OSVERSIONINFOEX info;
-     ZeroMemory(&info, sizeof(OSVERSIONINFOEX));
-     info.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-     GetVersionEx((LPOSVERSIONINFO)&info);//info requires typecasting
+    ZeroMemory(&info, sizeof(OSVERSIONINFOEX));
+    info.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+    GetVersionEx((LPOSVERSIONINFO)&info);//info requires typecasting
 
-    Winver.append(std::to_string(info.dwMajorVersion)).append(".").append(std::to_string(info.dwMinorVersion));
-
+    return std::string(std::to_string(info.dwMajorVersion).append(".").append(std::to_string(info.dwMinorVersion)));
 }
 
-Getter::Getter()
-{
-    Profile();
-    CPU();
-    PCName();
-    IPV();
-    calc();
-    getopv();
-    Update();
+Getter::Getter(){      
+    calc(); 
 }
 
-void Getter::Update()
-{
-    RAM();
-    SysT();
-    LocT();
-    CPULoad();
-}
-
-void Getter::PCName(){
+std::string const Getter::getPCName(){
     char name[256];
     DWORD len = sizeof(name);
     GetComputerNameA(name, &len);
     
-    _PCNAME = std::string(name);
+    return std::string(name);
 }
 
-void Getter::CPULoad(){ // This is not my own code, I took it from
+std::string const Getter::getPhisRAM(){
+    
+    state.dwLength = sizeof(state);
+    GlobalMemoryStatusEx(&state);
+    
+    return std::to_string(((state.ullTotalPhys / usebyt) / usebyt)) + "MB";
+}
+
+std::string const Getter::getPorUsedRAM(){
+    
+    state.dwLength = sizeof(state);
+    GlobalMemoryStatusEx(&state);
+
+    return std::to_string(state.dwMemoryLoad).append("%");
+}
+
+std::string const Getter::getFreePhisRAM(){
+    
+    state.dwLength = sizeof(state);
+    GlobalMemoryStatusEx(&state);
+    
+    return std::to_string((state.ullAvailPhys/ usebyt) /usebyt) + "MB";
+}
+
+std::string const Getter::getCPLoad(){ // This is not my own code, I took it from
 //https://www.reddit.com/r/learnprogramming/comments/nbxhsn/heres_how_to_get_cpu_usage_percentage_of_current/?tl=es-es
 //
     FILETIME ftime, fsys, fuser;
@@ -87,11 +95,11 @@ void Getter::CPULoad(){ // This is not my own code, I took it from
     lastcpu = now;
     lastusc = user;
     lastsysc = sys;
-    _CPULOAD = std::to_string(percent * 100);
+    return std::to_string(percent * 100);
 }
 
-void Getter::CPU(){
-
+void Getter::getCPUI(std::string *_CPU, std::string *_Vend, std::string *_Cores){
+    std::string cpub;
     std::array<int, 4> data = {};
     std::array<int, 3> keys = {1,3,2};
     std::array<int, 4> integerbuffer = {};
@@ -111,48 +119,33 @@ void Getter::CPU(){
 
     for(int x = 0; x < 3; x++) reinterpret_cast<int *>(LcharBuffer.data())[x] = data[keys[x]];
 
-    _Marc = std::string(LcharBuffer.data());
+    *_Vend = std::string(LcharBuffer.data());
 
 // Processor example: intel i...
     for(int id : functionIDs){
         __cpuid(integerbuffer.data(), id);
         memcpy(McharBuffer.data(), integerbuffer.data(), sizeofIntegerBuffer);
-        _CPU.append(McharBuffer.data());
+        cpub.append(McharBuffer.data());
     }
-
+    *_CPU = cpub;
     
     GetSystemInfo(&sys);
-    _NCORES = std::to_string(sys.dwNumberOfProcessors);
-        
+    *_Cores = std::to_string(sys.dwNumberOfProcessors);
     
 }
 
-void Getter::RAM(){
-
-    MEMORYSTATUSEX state;
-    state.dwLength = sizeof(state);
-    GlobalMemoryStatusEx(&state);
-
-    _PhisRAM = std::to_string(((state.ullTotalPhys / usebyt) / usebyt)) + "MB";
-    _FreePhisRAM = std::to_string((state.ullAvailPhys/ usebyt) /usebyt) + "MB";
-    _PorUsedRAM = std::to_string(state.dwMemoryLoad).append("%");
-
-}
-
-void Getter::Profile(){
-
+std::string const Getter::Profile(){
     char name[UNLEN + 1];
     DWORD size = UNLEN;
     
     GetUserNameA(name, &size);
     
-    _USERNAME = std::string(name);
-
+    return std::string(name);
 }
 
-void Getter::SysT(){
+std::string const Getter::getSysT(){
     GetSystemTime(&syst);
-    
+    std::string TMF;
     std::string sh;
     std::string sm;
     std::string ss;
@@ -161,30 +154,26 @@ void Getter::SysT(){
     int m = syst.wMinute;
     int s = syst.wSecond;
 
-
     if(h < 10){
         sh = "0" + std::to_string(h);
-    }else{
-        sh = std::to_string(h);
-    }
+    }else sh = std::to_string(h);
 
     if(m < 10){
         sm = "0" + std::to_string(m);
-    }else{
-        sm = std::to_string(m);
-    }
+    }else sm = std::to_string(m);
 
     if(s < 10){
         ss = "0" + std::to_string(s);
-    }else{
-        ss = std::to_string(s);
-    }
+    }else ss = std::to_string(s);
 
     TMF =  sh + ":" + sm + ":" + ss;
+    return TMF;
 }
 
-void Getter::LocT(){
+std::string const Getter::getLocT(){
     GetLocalTime(&loct);
+    std::string LTF;
+
     std::string sh;
     std::string sm;
     std::string ss;
@@ -193,29 +182,23 @@ void Getter::LocT(){
     int m = loct.wMinute;
     int s = loct.wSecond;
 
-
     if(h < 10 ){
         sh = "0" + std::to_string(h);
-    }else{
-        sh = std::to_string(h);
-    }
+    }else sh = std::to_string(h);
 
     if(m < 10){
         sm = "0" + std::to_string(m);
-    }else{
-        sm = std::to_string(m);
-    }
+    }else sm = std::to_string(m);
 
     if(s < 10){
         ss = "0" + std::to_string(s);
-    }else{
-        ss = std::to_string(s);
-    }
+    }else ss = std::to_string(s);
 
     LTF =  sh + ":" + sm + ":" + ss;
+    return LTF;
 }
 
-void Getter::IPV(){
+void Getter::IPV(std::string *IPv4, std::string *Gate, std::string *Adap){
     
     IP_ADAPTER_INFO *padpi;
     ULONG ulOub;
@@ -231,7 +214,9 @@ void Getter::IPV(){
     }
 
     if((retval = GetAdaptersInfo(padpi, &ulOub)) != ERROR_SUCCESS){
-        IPV4 = "NULL";
+        *IPv4 = "NULL";
+        *Gate = "NULL";
+        *Adap = "NULL";
         return;
     }
 
@@ -241,9 +226,9 @@ void Getter::IPV(){
     while(padap){
         g = padap->IpAddressList.IpAddress.String;
         if((objt.compare(0, 6, g, 0, 6)) == 0){
-            ADAPTNAME = padap->AdapterName;
-            IPV4 = padap->IpAddressList.IpAddress.String;
-            GATEWAY = padap->GatewayList.IpAddress.String;
+            *Adap = padap->AdapterName;
+            *IPv4 = padap->IpAddressList.IpAddress.String;
+            *Gate = padap->GatewayList.IpAddress.String;
         }
         padap = padap->Next;
     }   

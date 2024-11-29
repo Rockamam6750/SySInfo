@@ -8,6 +8,9 @@ Gui::Gui(){
     
     currentLanguaje = reader.activeLan();
     languaje = reader.setlanguaje(currentLanguaje, 10);
+
+    getter.getCPUI(&c._CPU, &c._Vendor, &c._Cores);
+    getter.IPV(&n.Ip, &n.Gateway, &n.AdpaIf);
 }
 
 void Gui::cofigureLan(int langu){
@@ -73,25 +76,24 @@ void Gui::SysInformation(){
     //gotoxy(45, 7, BLACK, GREEN); std::cout << languaje[16]; 
     gotoxy(15, 13, BLACK, GREEN); std::cout << languaje[3];
     
-    gotoxy(35, 3, BLACK, GREEN);  std::cout << getter.getUserName();
+    gotoxy(35, 3, BLACK, GREEN);  std::cout << getter.Profile();
     gotoxy(35, 4, BLACK, GREEN);  std::cout << getter.getPCName();
     gotoxy(35, 5, BLACK, GREEN); std::cout << getter.getSysT();
     gotoxy(35, 6, BLACK, GREEN); std::cout << getter.getLocT();
-    gotoxy(35, 7, BLACK, GREEN); std::cout << getter.getCPUIM();
-    gotoxy(35, 8, BLACK, GREEN); std::cout << getter.getCPUI();
-    gotoxy(35, 9, BLACK, GREEN); std::cout << getter.getCPUNC();
+    gotoxy(35, 7, BLACK, GREEN); std::cout << c._Vendor;
+    gotoxy(35, 8, BLACK, GREEN); std::cout << c._CPU;
+    gotoxy(35, 9, BLACK, GREEN); std::cout << c._Cores;
     gotoxy(35, 10, BLACK, GREEN); std::cout << getter.getPhisRAM();
     gotoxy(35, 11, BLACK, GREEN); std::cout << getter.getPorUsedRAM();
-    gotoxy(65, 3, BLACK, GREEN); std::cout << getter.getFreePhisRAM();
-    gotoxy(65, 4, BLACK, GREEN); std::cout << getter.getIPV4();
-    gotoxy(65, 5, BLACK, GREEN); std::cout << getter.getGaWay();
+    gotoxy(65, 3, BLACK, GREEN); std::cout << getter.getFreePhisRAM();;
+    gotoxy(65, 4, BLACK, GREEN); std::cout << n.Ip;
+    gotoxy(65, 5, BLACK, GREEN); std::cout << n.Gateway;
     gotoxy(65, 6, BLACK, GREEN); std::cout << getter.getCPLoad();
     gotoxy(65, 7, BLACK, GREEN); std::cout << getter.getWinver();
 
 }
 
 void Gui::USysInf(){
-    getter.Update();
     gotoxy(35, 5, BLACK, GREEN); std::cout << getter.getSysT();
     gotoxy(35, 6, BLACK, GREEN); std::cout << getter.getLocT();
     gotoxy(35, 11, BLACK, GREEN); std::cout << getter.getPorUsedRAM();

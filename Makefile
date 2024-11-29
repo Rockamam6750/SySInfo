@@ -4,7 +4,7 @@ NAME = SySInfo
 all: $(NAME)
 
 $(NAME):
-	g++ -Wall $(SCR) $(KEY) -o $(NAME)
+	g++ -Wall $(SCR) -o $(NAME)
 
 clean: 
 
