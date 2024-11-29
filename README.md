@@ -1,9 +1,8 @@
 # SySInfo
 
-## A Functional simple proyect written in C++ showing how to create a console aplication can get windows system information
+## A simple system monitoring program
 
-This is a simple console application I created to learn how to obtain and manipulate information from the Windows system.
-The app has another feature to change the running language without having to restart the app.
+This is a simple console application  created with the idea of a simple system monitoring Windows system. I create this aplication during this last weeks.
 
 ## How use this proyect
 1. Clone this proyect.
