@@ -2,7 +2,7 @@
 
 ## A simple system monitoring program
 
-A simple monitoring console aplication, created in a week when I start learning WinApi stuff 
+A simple monitoring console aplication, created in a week when I start learning WinApi stuff by my own.
 
 ## How use this proyect
 1. Clone this proyect.
